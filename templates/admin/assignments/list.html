@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Liste des devoirs{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2>📋 Liste des devoirs</h2>
+        {% if user.is_teacher or user.is_admin %}
+            <a href="{% url 'assignments:create' %}" class="btn btn-success">+ Créer un devoir</a>
+        {% endif %}
+    </div>
+</div>
+
+{% for assignment in assignments %}
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: start;">
+        <div>
+            <h3>{{ assignment.title }}</h3>
+            <p><strong>Matière :</strong> {{ assignment.discipline.name }}</p>
+            <p><strong>Date limite :</strong> {{ assignment.submission_deadline|date:"d/m/Y H:i" }}</p>
+            <p><strong>Note max :</strong> {{ assignment.max_score }}</p>
+            <p>
+                <span class="badge {% if assignment.is_published %}badge-success{% else %}badge-warning{% endif %}">
+                    {% if assignment.is_published %}✅ Publié{% else %}⏳ Brouillon{% endif %}
+                </span>
+            </p>
+            <a href="{% url 'assignments:detail' assignment.pk %}" class="btn btn-primary btn-sm">Voir détails</a>
+        </div>
+        {% if user.is_teacher or user.is_admin %}
+        <div style="display: flex; gap: 5px;">
+            <a href="{% url 'assignments:edit' assignment.pk %}" class="btn btn-primary btn-sm">✏️</a>
+            <a href="{% url 'assignments:delete' assignment.pk %}" class="btn btn-danger btn-sm">🗑️</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% empty %}
+<div class="card">
+    <p style="text-align: center; color: #666;">Aucun devoir disponible pour le moment.</p>
+</div>
+{% endfor %}
+{% endblock %}

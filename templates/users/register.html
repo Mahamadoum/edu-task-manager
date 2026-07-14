@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 500px; margin: 40px auto;">
+    <h2 style="text-align: center; color: #2c3e50;">📝 Inscription</h2>
+    <form method="post" style="margin-top: 25px;">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_username">Nom d'utilisateur</label>
+            <input type="text" name="username" id="id_username" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="id_email">Email</label>
+            <input type="email" name="email" id="id_email" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="id_first_name">Prénom</label>
+            <input type="text" name="first_name" id="id_first_name" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="id_last_name">Nom</label>
+            <input type="text" name="last_name" id="id_last_name" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="id_role">Rôle</label>
+            <select name="role" id="id_role" class="form-control">
+                <option value="student">Étudiant</option>
+                <option value="teacher">Enseignant</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="id_password1">Mot de passe</label>
+            <input type="password" name="password1" id="id_password1" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="id_password2">Confirmer le mot de passe</label>
+            <input type="password" name="password2" id="id_password2" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-success" style="width: 100%; padding: 12px; font-size: 16px;">S'inscrire</button>
+    </form>
+    <p style="text-align: center; margin-top: 20px;">
+        Déjà un compte ? <a href="{% url 'login' %}" style="color: #3498db;">Se connecter</a>
+    </p>
+</div>
+{% endblock %}

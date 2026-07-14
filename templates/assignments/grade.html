@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Noter un rendu{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 600px; margin: 0 auto;">
+    <h2>📊 Noter le rendu</h2>
+    <p><strong>Étudiant :</strong> {{ submission.student.user.get_full_name }}</p>
+    <p><strong>Devoir :</strong> {{ submission.assignment.title }}</p>
+    <div style="background: #f8f9fa; padding: 15px; border-radius: 5px; margin: 15px 0;">
+        <p><strong>Contenu :</strong></p>
+        <p>{{ submission.content|linebreaks }}</p>
+    </div>
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field.errors }}
+            {{ field }}
+        </div>
+        {% endfor %}
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <button type="submit" class="btn btn-success" style="padding: 12px 30px;">Valider la note</button>
+            <a href="{% url 'assignments:detail' submission.assignment.pk %}" class="btn btn-primary" style="padding: 12px 30px;">Annuler</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Rendre un devoir{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 800px; margin: 0 auto;">
+    <h2>📤 Rendre le devoir : {{ assignment.title }}</h2>
+    <div style="background: #f8f9fa; padding: 15px; border-radius: 5px; margin: 15px 0;">
+        <p><strong>Matière :</strong> {{ assignment.discipline.name }}</p>
+        <p><strong>Enseignant :</strong> {{ assignment.teacher.user.get_full_name }}</p>
+        <p><strong>Date limite :</strong> {{ assignment.submission_deadline|date:"d/m/Y H:i" }}</p>
+        <p><strong>Note maximale :</strong> {{ assignment.max_score }}</p>
+        <p><strong>Description :</strong> {{ assignment.description|linebreaks }}</p>
+    </div>
+
+    <form method="post" enctype="multipart/form-data" style="margin-top: 25px;">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="id_content">Contenu du rendu :</label>
+            <textarea name="content" id="id_content" class="form-control" rows="6" placeholder="Écrivez votre réponse ici...">{{ form.content.value|default:'' }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="id_file">📎 Téléverser un fichier :</label>
+            <input type="file" name="file" id="id_file" class="form-control" accept=".pdf,.doc,.docx,.zip,.rar,.txt,.jpg,.png">
+            <small style="color: #666; font-size: 12px;">Formats acceptés : PDF, Word, ZIP, RAR, TXT, JPG, PNG</small>
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <button type="submit" class="btn btn-success" style="padding: 12px 30px;">📤 Soumettre le devoir</button>
+            <a href="{% url 'assignments:detail' assignment.pk %}" class="btn btn-primary" style="padding: 12px 30px;">Annuler</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

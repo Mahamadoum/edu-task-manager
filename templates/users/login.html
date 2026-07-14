@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 450px; margin: 40px auto;">
+    <h2 style="text-align: center; color: #2c3e50;">🔐 Connexion</h2>
+    <form method="post" style="margin-top: 25px;">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_username">Nom d'utilisateur</label>
+            <input type="text" name="username" id="id_username" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="id_password">Mot de passe</label>
+            <input type="password" name="password" id="id_password" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 16px;">Se connecter</button>
+    </form>
+    <p style="text-align: center; margin-top: 20px;">
+        Pas encore de compte ? <a href="{% url 'register' %}" style="color: #3498db;">S'inscrire</a>
+    </p>
+</div>
+{% endblock %}

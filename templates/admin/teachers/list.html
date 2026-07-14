@@ -1,0 +1,45 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Gestion des enseignants{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2>👨‍🏫 Gestion des enseignants</h2>
+        <a href="{% url 'teacher_create' %}" class="btn btn-success">+ Ajouter un enseignant</a>
+    </div>
+</div>
+
+<div class="card">
+    <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr style="background: #f8f9fa;">
+                <th style="padding: 10px; text-align: left;">Nom</th>
+                <th style="padding: 10px; text-align: left;">Email</th>
+                <th style="padding: 10px; text-align: left;">Département</th>
+                <th style="padding: 10px; text-align: left;">Cours</th>
+                <th style="padding: 10px; text-align: center;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for teacher in teachers %}
+            <tr style="border-bottom: 1px solid #ddd;">
+                <td style="padding: 10px;">{{ teacher.user.get_full_name }}</td>
+                <td style="padding: 10px;">{{ teacher.user.email }}</td>
+                <td style="padding: 10px;">{{ teacher.department|default:"-" }}</td>
+                <td style="padding: 10px;">{{ teacher.assignments.count }}</td>
+                <td style="padding: 10px; text-align: center;">
+                    <a href="{% url 'teacher_edit' teacher.pk %}" class="btn btn-primary btn-sm">✏️</a>
+                    <a href="{% url 'teacher_delete' teacher.pk %}" class="btn btn-danger btn-sm">🗑️</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" style="padding: 20px; text-align: center; color: #666;">Aucun enseignant enregistré.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

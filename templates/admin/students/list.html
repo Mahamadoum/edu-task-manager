@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Gestion des étudiants{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2>👨‍🎓 Gestion des étudiants</h2>
+        <a href="{% url 'student_create' %}" class="btn btn-success">+ Ajouter un étudiant</a>
+    </div>
+</div>
+
+<div class="card">
+    <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr style="background: #f8f9fa;">
+                <th style="padding: 10px; text-align: left;">Nom</th>
+                <th style="padding: 10px; text-align: left;">Email</th>
+                <th style="padding: 10px; text-align: left;">ID</th>
+                <th style="padding: 10px; text-align: left;">Niveau</th>
+                <th style="padding: 10px; text-align: center;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+            <tr style="border-bottom: 1px solid #ddd;">
+                <td style="padding: 10px;">{{ student.user.get_full_name }}</td>
+                <td style="padding: 10px;">{{ student.user.email }}</td>
+                <td style="padding: 10px;">{{ student.student_id }}</td>
+                <td style="padding: 10px;">{{ student.level|default:"-" }}</td>
+                <td style="padding: 10px; text-align: center;">
+                    <a href="{% url 'student_edit' student.pk %}" class="btn btn-primary btn-sm">✏️</a>
+                    <a href="{% url 'student_delete' student.pk %}" class="btn btn-danger btn-sm">🗑️</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" style="padding: 20px; text-align: center; color: #666;">Aucun étudiant enregistré.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Rendu effectué{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 600px; margin: 40px auto; text-align: center;">
+    <h2>✅ Devoir rendu avec succès !</h2>
+    <p>Votre travail a été soumis pour le devoir <strong>{{ assignment.title }}</strong>.</p>
+    <p>Date de soumission : {{ submission.submitted_at|date:"d/m/Y H:i" }}</p>
+    <div style="margin-top: 30px;">
+        <a href="{% url 'assignments:detail' assignment.pk %}" class="btn btn-primary">Voir le devoir</a>
+        <a href="{% url 'assignments:list' %}" class="btn btn-success">Voir tous les devoirs</a>
+    </div>
+</div>
+{% endblock %}

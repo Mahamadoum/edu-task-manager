@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Gestion des matières{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2>📚 Gestion des matières</h2>
+        {% if user.is_admin or user.is_teacher %}
+            <a href="{% url 'assignments:discipline_create' %}" class="btn btn-success">+ Ajouter une matière</a>
+        {% endif %}
+    </div>
+</div>
+
+<div class="card">
+    <table>
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Nom</th>
+                <th>Crédits ECTS</th>
+                <th>Semestre</th>
+                <th>Enseignant</th>
+                <th>Statut</th>
+                <th style="text-align: center;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for discipline in disciplines %}
+            <tr>
+                <td><strong>{{ discipline.code }}</strong></td>
+                <td>{{ discipline.name }}</td>
+                <td>{{ discipline.ects_credits }}</td>
+                <td>{{ discipline.semester|default:"-" }}</td>
+                <td>{{ discipline.teacher.user.get_full_name|default:"-" }}</td>
+                <td>
+                    <span class="badge {% if discipline.is_active %}badge-success{% else %}badge-danger{% endif %}">
+                        {% if discipline.is_active %}✅ Active{% else %}❌ Inactive{% endif %}
+                    </span>
+                </td>
+                <td style="text-align: center;">
+                    <a href="{% url 'assignments:discipline_edit' discipline.pk %}" class="btn btn-primary btn-sm">✏️</a>
+                    <a href="{% url 'assignments:discipline_delete' discipline.pk %}" class="btn btn-danger btn-sm">🗑️</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" style="text-align: center; padding: 20px; color: #666;">
+                    Aucune matière enregistrée.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

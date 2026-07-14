@@ -1,0 +1,20 @@
+docker compose exec web bash -c "cat > /app/templates/admin/confirm_delete.html << 'EOF'
+{% extends 'base.html' %}
+
+{% block title %}Confirmation de suppression{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 500px; margin: 40px auto; text-align: center;">
+    <h2>⚠️ Confirmation</h2>
+    <p>Voulez-vous vraiment supprimer {{ type }} <strong>{{ object }}</strong> ?</p>
+    <p style="color: #e74c3c; font-size: 14px;">Cette action est irréversible.</p>
+    <form method="post" style="margin-top: 20px;">
+        {% csrf_token %}
+        <div style="display: flex; gap: 10px; justify-content: center;">
+            <button type="submit" class="btn btn-danger">🗑️ Supprimer</button>
+            <a href="{{ request.META.HTTP_REFERER|default:'/' }}" class="btn btn-primary">Annuler</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
+EOF"

@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ assignment.title }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>{{ assignment.title }}</h2>
+    <p><strong>Matière :</strong> {{ assignment.discipline.name }}</p>
+    <p><strong>Enseignant :</strong> {{ assignment.teacher.user.get_full_name }}</p>
+    <p><strong>Description :</strong> {{ assignment.description|linebreaks }}</p>
+    <p><strong>Instructions :</strong> {{ assignment.instructions|linebreaks }}</p>
+    <p><strong>Date limite :</strong> {{ assignment.submission_deadline|date:"d/m/Y H:i" }}</p>
+    <p><strong>Note maximale :</strong> {{ assignment.max_score }}</p>
+    <p><strong>Note de passage :</strong> {{ assignment.passing_score }}</p>
+    <p><strong>Type :</strong> {{ assignment.get_assignment_type_display }}</p>
+    <p><strong>Difficulté :</strong> {{ assignment.get_difficulty_level_display }}</p>
+    <p>
+        <span class="badge {% if assignment.is_published %}badge-success{% else %}badge-warning{% endif %}">
+            {% if assignment.is_published %}✅ Publié{% else %}⏳ Brouillon{% endif %}
+        </span>
+    </p>
+    
+    {% if user.is_student %}
+        <div style="margin-top: 15px;">
+            {% if not has_submission %}
+                <a href="{% url 'submissions:create' assignment.pk %}" class="btn btn-success">📤 Rendre ce devoir</a>
+            {% else %}
+                <p style="color: #27ae60;">✅ Vous avez déjà rendu ce devoir</p>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <p style="margin-top: 15px;">
+        <a href="{% url 'assignments:list' %}" class="btn btn-primary">← Retour à la liste</a>
+    </p>
+</div>
+
+{% if submissions %}
+<div class="card">
+    <h3>📄 Rendus</h3>
+    {% for submission in submissions %}
+    <div style="border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 5px;">
+        <p><strong>Étudiant :</strong> {{ submission.student.user.get_full_name }}</p>
+        <p><strong>Statut :</strong>
+            <span class="badge {% if submission.status == 'graded' %}badge-success{% elif submission.status == 'submitted' %}badge-info{% else %}badge-warning{% endif %}">
+                {{ submission.get_status_display }}
+            </span>
+        </p>
+        <p><strong>Date :</strong> {{ submission.submitted_at|date:"d/m/Y H:i" }}</p>
+        <p><strong>En retard :</strong> {% if submission.is_late %}⚠️ Oui{% else %}✅ Non{% endif %}</p>
+        {% if user.is_teacher and submission.status != 'graded' %}
+            <a href="{% url 'submissions:grade' submission.pk %}" class="btn btn-success btn-sm">Noter</a>
+        {% endif %}
+        {% if submission.grade %}
+            <p><strong>Note :</strong> {{ submission.grade.score }}/{{ submission.assignment.max_score }}</p>
+            <p><strong>Feedback :</strong> {{ submission.grade.feedback }}</p>
+        {% endif %}
+    </div>
+    {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,93 @@
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edu Task Manager - {% block title %}Accueil{% endblock %}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        header { background: #2c3e50; color: white; padding: 15px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        header .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+        header h1 a { color: white; text-decoration: none; font-size: 24px; }
+        nav a { color: white; text-decoration: none; margin-left: 15px; padding: 8px 12px; border-radius: 5px; transition: 0.3s; }
+        nav a:hover { background: #34495e; }
+        .messages { margin: 20px 0; }
+        .message { padding: 12px 20px; border-radius: 5px; margin-bottom: 10px; font-weight: 500; }
+        .success { background: #d4edda; color: #155724; border-left: 4px solid #28a745; }
+        .error { background: #f8d7da; color: #721c24; border-left: 4px solid #dc3545; }
+        .info { background: #d1ecf1; color: #0c5460; border-left: 4px solid #17a2b8; }
+        .card { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); margin-bottom: 20px; }
+        .btn { display: inline-block; padding: 10px 25px; border-radius: 5px; text-decoration: none; color: white; border: none; cursor: pointer; font-size: 14px; transition: 0.3s; }
+        .btn-primary { background: #3498db; }
+        .btn-primary:hover { background: #2980b9; }
+        .btn-success { background: #27ae60; }
+        .btn-success:hover { background: #229954; }
+        .btn-danger { background: #e74c3c; }
+        .btn-danger:hover { background: #c0392b; }
+        .btn-warning { background: #f39c12; }
+        .btn-warning:hover { background: #e67e22; }
+        .btn-sm { padding: 5px 15px; font-size: 12px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 5px; color: #333; }
+        .form-control { width: 100%; padding: 10px 15px; border: 2px solid #ddd; border-radius: 5px; font-size: 14px; transition: 0.3s; }
+        .form-control:focus { border-color: #3498db; outline: none; }
+        footer { background: #2c3e50; color: white; text-align: center; padding: 20px 0; margin-top: 40px; }
+        .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .badge-success { background: #d4edda; color: #155724; }
+        .badge-warning { background: #fff3cd; color: #856404; }
+        .badge-danger { background: #f8d7da; color: #721c24; }
+        .badge-info { background: #d1ecf1; color: #0c5460; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #f8f9fa; font-weight: 600; }
+        @media (max-width: 768px) {
+            header .container { flex-direction: column; gap: 10px; }
+            nav a { margin: 0 5px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><a href="{% url 'home' %}">📚 Edu Task Manager</a></h1>
+            <nav>
+                <a href="{% url 'home' %}">Accueil</a>
+                <a href="{% url 'assignments:list' %}">Devoirs</a>
+                <a href="{% url 'assignments:discipline_list' %}">Matières</a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'dashboard' %}">Tableau de bord</a>
+                    {% if user.is_admin %}
+                        <span style="color: #f1c40f;">|</span>
+                        <a href="{% url 'teacher_list' %}">👨‍🏫 Enseignants</a>
+                        <a href="{% url 'student_list' %}">👨‍🎓 Étudiants</a>
+                        <a href="/admin/">⚙️ Admin Django</a>
+                    {% endif %}
+                    <a href="{% url 'logout' %}">Déconnexion</a>
+                {% else %}
+                    <a href="{% url 'login' %}">Connexion</a>
+                    <a href="{% url 'register' %}">Inscription</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="message {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Edu Task Manager - Django + Docker</p>
+        </div>
+    </footer>
+</body>
+</html>

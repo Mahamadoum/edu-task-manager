@@ -1,0 +1,22 @@
+
+{% extends 'base.html' %}
+{% block title %}Créer un devoir{% endblock %}
+{% block content %}
+<div class="card" style="max-width: 800px; margin: 0 auto;">
+    <h2>📝 Créer un nouveau devoir</h2>
+    <form method="post" style="margin-top: 25px;">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field.errors }}
+            {{ field }}
+        </div>
+        {% endfor %}
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <button type="submit" class="btn btn-success" style="padding: 12px 30px;">Créer le devoir</button>
+            <a href="{% url 'assignments:list' %}" class="btn btn-primary" style="padding: 12px 30px;">Annuler</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

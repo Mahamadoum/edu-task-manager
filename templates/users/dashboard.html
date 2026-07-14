@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Tableau de bord{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>👋 Bienvenue {{ user.get_full_name|default:user.username }} !</h2>
+    <p><strong>Rôle :</strong> 
+        {% if user.is_admin %}👑 Administrateur{% endif %}
+        {% if user.is_teacher %}👨‍🏫 Enseignant{% endif %}
+        {% if user.is_student %}👨‍🎓 Étudiant{% endif %}
+    </p>
+    <p><strong>Email :</strong> {{ user.email }}</p>
+</div>
+
+{% if user.is_admin %}
+<div class="card">
+    <h3>⚙️ Administration</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
+        <a href="{% url 'teacher_list' %}" class="btn btn-primary" style="text-align: center; padding: 20px;">
+            👨‍🏫 Gérer les enseignants
+        </a>
+        <a href="{% url 'student_list' %}" class="btn btn-success" style="text-align: center; padding: 20px;">
+            👨‍🎓 Gérer les étudiants
+        </a>
+        <a href="/admin/" class="btn btn-warning" style="text-align: center; padding: 20px;">
+            ⚙️ Admin Django
+        </a>
+    </div>
+</div>
+{% endif %}
+
+{% if user.is_teacher and teacher %}
+<div class="card">
+    <h3>📚 Informations enseignant</h3>
+    <p><strong>Département :</strong> {{ teacher.department|default:"Non défini" }}</p>
+    <p><strong>Bureau :</strong> {{ teacher.office_location|default:"Non défini" }}</p>
+    <p><strong>Heures de consultation :</strong> {{ teacher.consultation_hours|default:"Non définies" }}</p>
+    <div style="margin-top: 15px;">
+        <a href="{% url 'assignments:create' %}" class="btn btn-primary">➕ Créer un devoir</a>
+        <a href="{% url 'assignments:list' %}" class="btn btn-success">📋 Voir mes devoirs</a>
+    </div>
+</div>
+{% endif %}
+
+{% if user.is_student and student %}
+<div class="card">
+    <h3>📖 Informations étudiant</h3>
+    <p><strong>Numéro étudiant :</strong> {{ student.student_id }}</p>
+    <p><strong>Niveau :</strong> {{ student.level|default:"Non défini" }}</p>
+    <p><strong>Groupe :</strong> {{ student.group_code|default:"Non défini" }}</p>
+    <div style="margin-top: 15px;">
+        <a href="{% url 'assignments:list' %}" class="btn btn-primary">📚 Voir mes devoirs</a>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
