@@ -1,6 +1,10 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
-from .models import User, Teacher, Student
+from django.contrib.auth.forms import (
+    AuthenticationForm,
+    UserCreationForm,
+)
+
+from .models import Student, Teacher, User
 
 
 class UserRegistrationForm(UserCreationForm):
@@ -9,7 +13,15 @@ class UserRegistrationForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'first_name', 'last_name', 'role', 'password1', 'password2']
+        fields = [
+            "username",
+            "email",
+            "first_name",
+            "last_name",
+            "role",
+            "password1",
+            "password2",
+        ]
 
 
 class UserLoginForm(AuthenticationForm):
@@ -20,7 +32,7 @@ class UserLoginForm(AuthenticationForm):
 class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['username', 'email', 'first_name', 'last_name', 'role', 'is_active']
+        fields = ["username", "email", "first_name", "last_name", "role", "is_active"]
 
 
 class TeacherForm(forms.ModelForm):
@@ -35,23 +47,23 @@ class TeacherForm(forms.ModelForm):
 
     class Meta:
         model = Teacher
-        fields = ['department', 'office_location', 'consultation_hours']
+        fields = ["department", "office_location", "consultation_hours"]
 
     def save(self, commit=True):
         user_data = {
-            'username': self.cleaned_data['username'],
-            'email': self.cleaned_data['email'],
-            'first_name': self.cleaned_data['first_name'],
-            'last_name': self.cleaned_data['last_name'],
-            'role': User.Role.TEACHER
+            "username": self.cleaned_data["username"],
+            "email": self.cleaned_data["email"],
+            "first_name": self.cleaned_data["first_name"],
+            "last_name": self.cleaned_data["last_name"],
+            "role": User.Role.TEACHER,
         }
-        if self.cleaned_data.get('password'):
-            user_data['password'] = self.cleaned_data['password']
+        if self.cleaned_data.get("password"):
+            user_data["password"] = self.cleaned_data["password"]
 
         if self.instance.pk:
             user = self.instance.user
             for key, value in user_data.items():
-                if key != 'password':
+                if key != "password":
                     setattr(user, key, value)
                 elif value:
                     user.set_password(value)
@@ -75,23 +87,23 @@ class StudentForm(forms.ModelForm):
 
     class Meta:
         model = Student
-        fields = ['student_id', 'group_code', 'level', 'enrolled_year']
+        fields = ["student_id", "group_code", "level", "enrolled_year"]
 
     def save(self, commit=True):
         user_data = {
-            'username': self.cleaned_data['username'],
-            'email': self.cleaned_data['email'],
-            'first_name': self.cleaned_data['first_name'],
-            'last_name': self.cleaned_data['last_name'],
-            'role': User.Role.STUDENT
+            "username": self.cleaned_data["username"],
+            "email": self.cleaned_data["email"],
+            "first_name": self.cleaned_data["first_name"],
+            "last_name": self.cleaned_data["last_name"],
+            "role": User.Role.STUDENT,
         }
-        if self.cleaned_data.get('password'):
-            user_data['password'] = self.cleaned_data['password']
+        if self.cleaned_data.get("password"):
+            user_data["password"] = self.cleaned_data["password"]
 
         if self.instance.pk:
             user = self.instance.user
             for key, value in user_data.items():
-                if key != 'password':
+                if key != "password":
                     setattr(user, key, value)
                 elif value:
                     user.set_password(value)
