@@ -7,18 +7,24 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('assignments', '0001_initial'),
-        ('users', '0002_student_teacher'),
+        ("assignments", "0001_initial"),
+        ("users", "0002_student_teacher"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='submission',
-            name='attachments',
+            model_name="submission",
+            name="attachments",
         ),
         migrations.AddField(
-            model_name='discipline',
-            name='teacher',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='disciplines', to='users.teacher'),
+            model_name="discipline",
+            name="teacher",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="disciplines",
+                to="users.teacher",
+            ),
         ),
     ]
