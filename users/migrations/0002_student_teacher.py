@@ -8,59 +8,29 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("users", "0001_initial"),
+        ('users', '0001_initial'),
     ]
 
     operations = [
         migrations.CreateModel(
-            name="Student",
+            name='Student',
             fields=[
-                (
-                    "id",
-                    models.BigAutoField(
-                        auto_created=True,
-                        primary_key=True,
-                        serialize=False,
-                        verbose_name="ID",
-                    ),
-                ),
-                ("student_id", models.CharField(max_length=20, unique=True)),
-                ("group_code", models.CharField(blank=True, max_length=20)),
-                ("level", models.CharField(blank=True, max_length=10)),
-                ("enrolled_year", models.IntegerField(blank=True, null=True)),
-                (
-                    "user",
-                    models.OneToOneField(
-                        on_delete=django.db.models.deletion.CASCADE,
-                        related_name="student_profile",
-                        to=settings.AUTH_USER_MODEL,
-                    ),
-                ),
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('student_id', models.CharField(max_length=20, unique=True)),
+                ('group_code', models.CharField(blank=True, max_length=20)),
+                ('level', models.CharField(blank=True, max_length=10)),
+                ('enrolled_year', models.IntegerField(blank=True, null=True)),
+                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='student_profile', to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.CreateModel(
-            name="Teacher",
+            name='Teacher',
             fields=[
-                (
-                    "id",
-                    models.BigAutoField(
-                        auto_created=True,
-                        primary_key=True,
-                        serialize=False,
-                        verbose_name="ID",
-                    ),
-                ),
-                ("department", models.CharField(blank=True, max_length=100)),
-                ("office_location", models.CharField(blank=True, max_length=200)),
-                ("consultation_hours", models.CharField(blank=True, max_length=200)),
-                (
-                    "user",
-                    models.OneToOneField(
-                        on_delete=django.db.models.deletion.CASCADE,
-                        related_name="teacher_profile",
-                        to=settings.AUTH_USER_MODEL,
-                    ),
-                ),
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('department', models.CharField(blank=True, max_length=100)),
+                ('office_location', models.CharField(blank=True, max_length=200)),
+                ('consultation_hours', models.CharField(blank=True, max_length=200)),
+                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='teacher_profile', to=settings.AUTH_USER_MODEL)),
             ],
         ),
     ]

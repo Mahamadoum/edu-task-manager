@@ -1,15 +1,7 @@
-﻿version: '3.8'
-
-services:
+﻿services:
   web:
     build: .
-    container_name: edu_app
-    command: python manage.py runserver 0.0.0.0:8000
     ports:
       - "8000:8000"
     volumes:
       - .:/app
-    environment:
-      - DEBUG=True
-      - SECRET_KEY=django-insecure-key
-      - ALLOWED_HOSTS=*
