@@ -8,7 +8,6 @@ from .forms import (
     TeacherForm,
     UserLoginForm,
     UserRegistrationForm,
-
 )
 from .models import Student, Teacher
 
