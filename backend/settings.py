@@ -3,9 +3,17 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-key'
-DEBUG = True
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-key')
+DEBUG = os.getenv('DEBUG', 'True') == 'True'
 ALLOWED_HOSTS = ['*']
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.railway.app',
+    'http://*.railway.app',
+    'https://*.up.railway.app',
+    'http://localhost:8000',
+    'https://localhost:8000',
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -14,7 +22,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'hello',
     'users',
     'assignments',
     'submissions',
@@ -77,7 +84,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
-
-# Media files (uploaded files)
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
